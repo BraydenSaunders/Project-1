@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SlidingPuzzle implements Problem<List<Integer>, List<Integer>> {
+public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
     private final int SIZE;
     private final List<Integer> INITIAL_STATE = new ArrayList<>(List.of(7,2,4,5,0,6,8,3,1));
 
@@ -22,42 +22,45 @@ public class SlidingPuzzle implements Problem<List<Integer>, List<Integer>> {
     public List<Integer> goalState(){
         return GOAL_STATE;
     }
-    public ArrayList<ArrayList<Integer>> geEmptyArrays(){
-        ArrayList<ArrayList<Integer>> listOfEmptyArrays = new ArrayList<>();
-        for (int i = 0; i < SIZE; i++){
-            listOfEmptyArrays.add(new ArrayList<>());
-        }
-        return listOfEmptyArrays;
+
+
+    @Override
+    public void printState(List<Integer> state) {
+        printMatrix(state);
     }
 
-
-    public void printState(List<Integer> list){
-        ArrayList<ArrayList<Integer>> matrix = geEmptyArrays();
-        int listIndex = 0;  // index to track elements in the list
-        for (int i = 0; i < matrix.size() && listIndex < list.size(); i++) {
-            ArrayList<Integer> currentRow = matrix.get(i);
-            // Add elements to the current row until it has SIZE elements
-            for (int j = 0; j < SIZE && listIndex < list.size(); j++) {
-                currentRow.add(list.get(listIndex));
-                listIndex++;
+    public void printMatrix(List<Integer> state) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(state.get(i * SIZE + j) + " ");
             }
-        }
-        for (int i = 0; i < matrix.size(); i++){
-            System.out.println(matrix.get(i));
+            System.out.println();
         }
     }
 
+    public List<Tuple<Integer, Integer>> execution(List<Integer> state) {
+        List<Tuple<Integer, Integer>> moves = new ArrayList<>();
+        int row = index / SIZE, col = index % SIZE;
 
-    public List<Tuple<List<Integer>, List<Integer>>> execution(List<Integer> currentState){
-//        for (int i = 0; i < currentState.size(); i++){
-//
-//        }
-        return null;
+        if (row > 0) moves.add(new Tuple<>(index, index - SIZE)); // Move up
+        if (row < SIZE - 1) moves.add(new Tuple<>(index, index + SIZE)); // Move down
+        if (col > 0) moves.add(new Tuple<>(index, index - 1)); // Move left
+        if (col < SIZE - 1) moves.add(new Tuple<>(index, index + 1)); // Move right
+
+        return moves;
     }
 
     public static void main(String[] args) {
-        List<Integer> test = new ArrayList<>(List.of(12,1,2,15,11,6,5,8,7,10,9,4,0,13,14,3));
-        SlidingPuzzle slidingPuzzle = new SlidingPuzzle(3);
-        slidingPuzzle.printState(test);
+        SlidingPuzzle puzzle = new SlidingPuzzle(3);
+
+        System.out.println("Initial State:");
+        puzzle.printMatrix(puzzle.initialState());
+
+        int emptyIndex = puzzle.initialState().indexOf(0);
+        System.out.println("Possible Moves:");
+
+        for (Tuple<Integer, Integer> move : puzzle.execution(emptyIndex)) {
+            System.out.println("Move 0 from " + move.getState() + " to " + move.getAction());
+        }
     }
 }
