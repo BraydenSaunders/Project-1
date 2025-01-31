@@ -8,13 +8,14 @@ import java.util.List;
 
 
 public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
-    private final int SIZE;
+    private final double SIZE;
     private final List<Integer> INITIAL_STATE = new ArrayList<>(List.of(7,2,4,5,0,6,8,3,1));
 
     private final List<Integer> GOAL_STATE = new ArrayList<>(List.of(0,1,2,3,4,5,6,7,8));
 
-    public SlidingPuzzle(int mapSize){
-        this.SIZE = mapSize;
+    public SlidingPuzzle(){
+        int size = (int) Math.sqrt(GOAL_STATE.size());
+        this.SIZE = size;
     }
     public List<Integer> initialState(){
         return INITIAL_STATE;
@@ -27,7 +28,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
     public void printState(List<Integer> state) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(state.get(i * SIZE + j) + " ");
+                System.out.print(state.get((int) (i * SIZE + j)) + " ");
             }
             System.out.println();
         }
@@ -43,7 +44,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
         }
 
         List<Tuple<List<Integer>, Integer>> moves = new ArrayList<>();
-        int row = index / SIZE, col = index % SIZE;
+        int row = (int) (index / SIZE), col = (int) (index % SIZE);
 
         int[] dRow = {-1, 1, 0, 0};
         int[] dCol = {0, 0, -1, 1};
@@ -51,7 +52,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
         for (int i = 0; i < 4; i++) {
             int newRow = row + dRow[i];
             int newCol = col + dCol[i];
-            int newIndex = newRow * SIZE + newCol;
+            int newIndex = (int) (newRow * SIZE + newCol);
 
             if (newRow >= 0 && newRow < SIZE && newCol >= 0 && newCol < SIZE) {
                 List<Integer> newState = new ArrayList<>(state);
@@ -65,7 +66,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
 
 
     public static void main(String[] args) {
-        SlidingPuzzle puzzle = new SlidingPuzzle(3);
+        SlidingPuzzle puzzle = new SlidingPuzzle();
 
         System.out.println("Initial State:");
         puzzle.printState(puzzle.initialState());

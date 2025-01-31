@@ -9,12 +9,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SlidingPuzzle_UCS extends BaseSearch<List<Integer>, Integer> {
-    public SlidingPuzzle_UCS(int mapSize){
-        super(new SlidingPuzzle(mapSize), new SortedQueue<>(new ComparePathCost()));
+    public SlidingPuzzle_UCS(){
+        super(new SlidingPuzzle(), new SortedQueue<>(new ComparePathCost()));
     }
 
     public static void main(String[] args) {
-        SlidingPuzzle_UCS ucs = new SlidingPuzzle_UCS(3);
+        SlidingPuzzle_UCS ucs = new SlidingPuzzle_UCS();
         ucs.search();
     }
     public static class ComparePathCost implements Comparator<Node<List<Integer>, Integer>>{

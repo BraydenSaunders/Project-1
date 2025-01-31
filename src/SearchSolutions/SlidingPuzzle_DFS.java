@@ -7,12 +7,12 @@ import SearchProblems.SlidingPuzzle;
 import java.util.List;
 
 public class SlidingPuzzle_DFS extends BaseSearch<List<Integer>,Integer> {
-    public SlidingPuzzle_DFS(int mapSize){
-        super(new SlidingPuzzle(mapSize), new FILOQueue<>());
+    public SlidingPuzzle_DFS(){
+        super(new SlidingPuzzle(), new FILOQueue<>());
     }
 
     public static void main(String[] args) {
-        SlidingPuzzle_DFS dfs = new SlidingPuzzle_DFS(3);
+        SlidingPuzzle_DFS dfs = new SlidingPuzzle_DFS();
         dfs.search();
     }
 }
