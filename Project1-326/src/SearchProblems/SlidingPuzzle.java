@@ -26,6 +26,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, String> {
     public void printState(List<Integer> state) {
         printMatrix(state);
     }
+
     public void printMatrix(List<Integer> state) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
