@@ -24,12 +24,7 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
     }
 
 
-    @Override
     public void printState(List<Integer> state) {
-        printMatrix(state);
-    }
-
-    public void printMatrix(List<Integer> state) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 System.out.print(state.get(i * SIZE + j) + " ");
@@ -38,28 +33,46 @@ public class SlidingPuzzle implements Problem<List<Integer>, Integer> {
         }
     }
 
-    public List<Tuple<Integer, Integer>> execution(List<Integer> state) {
-        List<Tuple<Integer, Integer>> moves = new ArrayList<>();
+    public List<Tuple<List<Integer>, Integer>> execution(List<Integer> state) {
+        int index = -1;
+        for (int i = 0; i < state.size(); i++) {
+            if (state.get(i) == 0) {
+                index = i;
+                break;
+            }
+        }
+
+        List<Tuple<List<Integer>, Integer>> moves = new ArrayList<>();
         int row = index / SIZE, col = index % SIZE;
 
-        if (row > 0) moves.add(new Tuple<>(index, index - SIZE)); // Move up
-        if (row < SIZE - 1) moves.add(new Tuple<>(index, index + SIZE)); // Move down
-        if (col > 0) moves.add(new Tuple<>(index, index - 1)); // Move left
-        if (col < SIZE - 1) moves.add(new Tuple<>(index, index + 1)); // Move right
+        int[] dRow = {-1, 1, 0, 0};
+        int[] dCol = {0, 0, -1, 1};
 
+        for (int i = 0; i < 4; i++) {
+            int newRow = row + dRow[i];
+            int newCol = col + dCol[i];
+            int newIndex = newRow * SIZE + newCol;
+
+            if (newRow >= 0 && newRow < SIZE && newCol >= 0 && newCol < SIZE) {
+                List<Integer> newState = new ArrayList<>(state);
+                newState.set(index, newState.get(newIndex)); // Swap 0 with new position
+                newState.set(newIndex, 0);
+                moves.add(new Tuple<>(newState, newIndex)); // Store new state
+            }
+        }
         return moves;
     }
+
 
     public static void main(String[] args) {
         SlidingPuzzle puzzle = new SlidingPuzzle(3);
 
         System.out.println("Initial State:");
-        puzzle.printMatrix(puzzle.initialState());
+        puzzle.printState(puzzle.initialState());
 
-        int emptyIndex = puzzle.initialState().indexOf(0);
         System.out.println("Possible Moves:");
 
-        for (Tuple<Integer, Integer> move : puzzle.execution(emptyIndex)) {
+        for (Tuple<List<Integer>, Integer> move : puzzle.execution(puzzle.initialState())) {
             System.out.println("Move 0 from " + move.getState() + " to " + move.getAction());
         }
     }
