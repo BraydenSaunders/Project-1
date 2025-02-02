@@ -32,8 +32,8 @@ public class SlidingPuzzle_AStar_Distances extends BaseSearch<List<Integer>, Int
     }
 
     public static void main(String[] args) {
-        SlidingPuzzle_AStar_Distances astar = new SlidingPuzzle_AStar_Distances();
-        astar.search();
+        SlidingPuzzle_AStar_Distances Adistance = new SlidingPuzzle_AStar_Distances();
+        Adistance.search();
     }
 
     // Comparator for A* which considers both path cost and heuristic
